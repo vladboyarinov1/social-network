@@ -6,8 +6,8 @@ import s from './MyPosts.module.css'
 
 export const MyPosts = () => {
     const posts = [
-        {id: 1, avatar: '', message: "Hello, it's my first message"},
-        {id: 2, avatar: '', message: "Hello, it's my second message"},
+        {id: 1, avatar: '', message: "Hello, it's my first message", likes: 8},
+        {id: 2, avatar: '', message: "Hello, it's my second message", likes: 24},
     ]
 
 

@@ -6,9 +6,10 @@ type PostPropsType = {
 };
 
 type PostType = {
-    id: number,
-    avatar: string,
+    id: number
+    avatar: string
     message: string
+    likes: number
 };
 
 export const Post = (props: PostPropsType) => {
@@ -17,7 +18,10 @@ export const Post = (props: PostPropsType) => {
             {
                 props.posts.map((i) => {
                     return (
-                        <div>{i.message}</div>
+                        <>
+                            <div>{i.message}</div>
+                            <span>likes: {i.likes}</span>
+                        </>
                     )
                 })
             }
