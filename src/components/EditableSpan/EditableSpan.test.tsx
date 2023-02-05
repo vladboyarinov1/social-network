@@ -10,7 +10,6 @@ describe('EditableSpan', () => {
 
         expect(statusElement).toBeInTheDocument();
     });
-
     it('triggers edit mode on double click', () => {
         const status = 'Initial Status';
         render(<EditableSpan status={status} updateStatus={() => {}} />);
