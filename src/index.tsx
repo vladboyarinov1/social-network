@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import state, {addPost} from './state';
 
 ReactDOM.render(
-    <App />,
+    <App state={state} addPost={addPost}/>,
   document.getElementById('root')
 );

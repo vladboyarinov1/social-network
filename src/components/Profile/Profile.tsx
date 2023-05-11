@@ -6,7 +6,7 @@ import {ProfileInfo} from './ProfileInfo/ProfileInfo';
 
 type PropsType = {
     addPost: (postText: string) => void
-    posts: Array<PostsType>
+    posts: PostsType[]
 }
 
 type PostsType = {
@@ -23,7 +23,7 @@ export const Profile: FC<PropsType> = props => {
     return (
         <div className={s.wrapper}>
             <ProfileInfo/>
-            <MyPosts addPost={addPost} posts={posts}/>
+            <MyPosts  posts={posts} addPost={addPost}/>
         </div>
     )
 }

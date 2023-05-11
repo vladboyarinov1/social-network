@@ -55,4 +55,15 @@ const state: StateType = {
         // newMessageText: '',
     },
 };
+
+export const addPost = (postText: string) => {
+    const newPost = {
+        id: v1(),
+        avatar: '',
+        message: postText,
+        likes: 3
+    }
+    // setPosts([newPost, ...posts])
+    alert(postText)
+}
 export default state;
