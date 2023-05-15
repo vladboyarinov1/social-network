@@ -1,5 +1,4 @@
 import {v1} from 'uuid';
-import {observe} from 'web-vitals/dist/modules/lib/observe';
 
 
 export type PostsType = {
@@ -18,7 +17,6 @@ export type MessagesType = {
 }
 export type ProfilePageType = {
     posts: PostsType[],
-    newPostText: string
 }
 export type DialogsPageType = {
     dialogs: DialogsType[]
@@ -29,13 +27,18 @@ export type StateType = {
     profilePage: ProfilePageType
     dialogsPage: DialogsPageType
 }
+type AddPost = {
+    type: 'ADD-POST'
+    postText: string
+}
+export type ActionType = AddPost
+
 export type StoreType = {
     _state: StateType
     getState: () => StateType
     _callSubscriber: (state: any) => void
-    addPost: (postText: string) => void
-    updateNewPostText: (newText: string) => void
     subscribe: (observer: any) => void
+    dispatch: (action: ActionType) => void
 }
 
 let store: StoreType = {
@@ -45,7 +48,7 @@ let store: StoreType = {
                 {id: v1(), avatar: 'ava', message: 'Hello, it\'s my first message', likes: 8},
                 {id: v1(), avatar: 'ava', message: 'Hello, it\'s my second message', likes: 24}
             ],
-            newPostText: '',
+            // newPostText: '',
             // profile: null,
         },
         dialogsPage: {
@@ -73,22 +76,24 @@ let store: StoreType = {
     _callSubscriber(state: any) {
         console.log('state changed!')
     },
-    addPost(postText: string) {
-        const newPost: PostsType = {
-            id: v1(),
-            avatar: '',
-            message: postText,
-            likes: 3
-        }
-        this._state.profilePage.posts.unshift(newPost)
-    },
-    updateNewPostText(newText: string) {
-        this._state.profilePage.newPostText = newText
-        this._callSubscriber(this._state)
-    },
     subscribe(observer: any) {
         this._callSubscriber = observer
+    },
+    dispatch(action: ActionType) {
+        switch (action.type) {
+            case 'ADD-POST': {
+                const newPost: PostsType = {
+                    id: v1(),
+                    avatar: '',
+                    message: action.postText,
+                    likes: 3
+                }
+                this._state.profilePage.posts.unshift(newPost)
+            }
+
+        }
     }
+
 }
 
 export default store;

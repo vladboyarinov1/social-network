@@ -6,16 +6,16 @@ import {Profile} from './components/Profile/Profile';
 import {Dialogs} from './components/Dialogs/Dialogs';
 import {News} from './components/News/News';
 import {v1} from 'uuid';
-import {StateType} from './state';
+import {ActionType, StateType} from './state';
 
 type PropsType = {
     state: StateType
-    addPost: (title: string) => void
+    dispatch: (newPostText: ActionType) => void
 }
 
 
 const App: FC<PropsType> = (props) => {
-    const {state, addPost} = props
+    const {state, dispatch} = props
 
     return (
         <BrowserRouter>
@@ -23,7 +23,7 @@ const App: FC<PropsType> = (props) => {
                 <Sidebar/>
                 <div className="WrapperContent">
                     <Routes>
-                        <Route path="/profile" element={<Profile posts={state.profilePage.posts} addPost={addPost}  />}/>
+                        <Route path="/profile" element={<Profile posts={state.profilePage.posts} dispatch={dispatch}  />}/>
                         <Route path="/dialogs/*" element={<Dialogs/>}/>
                         <Route path="/news" element={<News/>}/>
                     </Routes>

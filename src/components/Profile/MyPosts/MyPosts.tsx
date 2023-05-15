@@ -1,9 +1,10 @@
 import React, {ChangeEvent, FC, useState} from 'react';
 import {Post} from './Post/Post';
 import s from './MyPosts.module.css'
+import {ActionType} from '../../../state';
 
 type PropsType = {
-    addPost: (postText: string) => void
+    dispatch: (newPostText: ActionType) => void
     posts: Array<PostsType>
 }
 
@@ -14,8 +15,8 @@ type PostsType = {
     likes: number
 }
 
-export const  MyPosts: FC<PropsType> = props => {
-    const {addPost, posts} = props
+export const MyPosts: FC<PropsType> = props => {
+    const {dispatch, posts} = props
 
     const [newPost, setNewPost] = useState<string>('')
 
@@ -38,7 +39,7 @@ export const  MyPosts: FC<PropsType> = props => {
         }
     }
     const addPostHandler = () => {
-        addPost(newPost)
+        dispatch({type: 'ADD-POST', postText: newPost})
         setNewPost('')
     }
 

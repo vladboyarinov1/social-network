@@ -3,9 +3,10 @@ import s from './Profile.module.css'
 import {MyPosts} from './MyPosts/MyPosts';
 import ava from '../../img/avatar.jpg'
 import {ProfileInfo} from './ProfileInfo/ProfileInfo';
+import {ActionType} from '../../state';
 
 type PropsType = {
-    addPost: (postText: string) => void
+    dispatch: (newPostText: ActionType) => void
     posts: PostsType[]
 }
 
@@ -18,12 +19,12 @@ type PostsType = {
 
 export const Profile: FC<PropsType> = props => {
 
-    const {addPost, posts} = props
+    const {dispatch, posts} = props
 
     return (
         <div className={s.wrapper}>
             <ProfileInfo/>
-            <MyPosts  posts={posts} addPost={addPost}/>
+            <MyPosts  posts={posts} dispatch={dispatch}/>
         </div>
     )
 }
