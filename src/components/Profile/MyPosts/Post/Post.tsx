@@ -19,11 +19,11 @@ export const Post: FC<PropsType> = props => {
             {
                 posts.map((p) => {
                     return (
-                        <>
+                        <div key={p.id}>
                             <div>{p.message}</div>
                             <span>likes: {p.likes}</span>
                             <div>{p.avatar}</div>
-                        </>
+                        </div>
                     )
                 })
             }

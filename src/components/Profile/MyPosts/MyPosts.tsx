@@ -14,10 +14,11 @@ type PostsType = {
     likes: number
 }
 
-export const MyPosts: FC<PropsType> = props => {
+export const  MyPosts: FC<PropsType> = props => {
     const {addPost, posts} = props
 
     const [newPost, setNewPost] = useState<string>('')
+
     const minLengthPost: number = 5
     const maxLengthPost: number = 30
     const isPostToShort: boolean = newPost.length < minLengthPost
@@ -55,7 +56,5 @@ export const MyPosts: FC<PropsType> = props => {
             </div>
             <Post posts={posts}/>
         </>
-
-
     )
 }
