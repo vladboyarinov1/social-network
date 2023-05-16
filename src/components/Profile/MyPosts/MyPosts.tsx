@@ -1,10 +1,13 @@
 import React, {ChangeEvent, FC, useState} from 'react';
 import {Post} from './Post/Post';
 import s from './MyPosts.module.css'
-import {ActionType} from '../../../state';
+
+import {addPostAC, ProfileAT} from '../../reducers/profile-reducer/profile-reducer';
+import {SuperButton} from '../../SuperButton/SuperButton';
+import {UniversalInput} from '../../UniversalInput /UniversalInput';
 
 type PropsType = {
-    dispatch: (newPostText: ActionType) => void
+    dispatch: (newPostText: ProfileAT) => void
     posts: Array<PostsType>
 }
 
@@ -33,24 +36,29 @@ export const MyPosts: FC<PropsType> = props => {
     const postValue = (e: ChangeEvent<HTMLInputElement>) => {
         setNewPost(e.currentTarget.value)
     }
-    const onKeyDownAddPost = (e: any) => {
+    const onKeyDownAddPost = () => {
         if (!isPostToShort && !isPostToLong) {
-            e.key === 'Enter' && addPostHandler()
+            // e.key === 'Enter' && addPostHandler()
+            addPostHandler()
         }
     }
+
+
     const addPostHandler = () => {
-        dispatch({type: 'ADD-POST', postText: newPost})
+        dispatch(addPostAC(newPost))
         setNewPost('')
     }
+
 
     return (
         <>
             <div className={s.wrapper}>
                 <h3>My Posts</h3>
                 <div className={s.input}>
-                    <input onChange={postValue} value={newPost} onKeyDown={onKeyDownAddPost}
-                           placeholder="Enter task"></input>
-                    <button onClick={addPostHandler} disabled={isAddBtnDisabled}>SEND</button>
+                    <UniversalInput value={newPost} setValue={setNewPost} onEnter={onKeyDownAddPost}
+                                    placeholder={'Enter task'}/>
+
+                    <SuperButton title="SEND" onClick={addPostHandler} disabled={isAddBtnDisabled}/>
                     {isPostToLongError}
                     {isPostToShortError}
                 </div>

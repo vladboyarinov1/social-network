@@ -1,5 +1,6 @@
 import {v1} from 'uuid';
-
+import {addPostAC, profileReducer} from './components/reducers/profile-reducer/profile-reducer';
+import {dialogsReducer} from './components/reducers/dialogs-reducer/dialogs-reducer';
 
 export type PostsType = {
     id: string
@@ -19,7 +20,7 @@ export type ProfilePageType = {
     posts: PostsType[],
 }
 export type DialogsPageType = {
-    dialogs: DialogsType[]
+    users: DialogsType[]
     messages: MessagesType[]
 }
 
@@ -27,18 +28,14 @@ export type StateType = {
     profilePage: ProfilePageType
     dialogsPage: DialogsPageType
 }
-type AddPost = {
-    type: 'ADD-POST'
-    postText: string
-}
-export type ActionType = AddPost
+
 
 export type StoreType = {
     _state: StateType
     getState: () => StateType
     _callSubscriber: (state: any) => void
     subscribe: (observer: any) => void
-    dispatch: (action: ActionType) => void
+    dispatch: (action: any) => void
 }
 
 let store: StoreType = {
@@ -48,11 +45,9 @@ let store: StoreType = {
                 {id: v1(), avatar: 'ava', message: 'Hello, it\'s my first message', likes: 8},
                 {id: v1(), avatar: 'ava', message: 'Hello, it\'s my second message', likes: 24}
             ],
-            // newPostText: '',
-            // profile: null,
         },
         dialogsPage: {
-            dialogs: [
+            users: [
                 {id: v1(), name: 'Dimych'},
                 {id: v1(), name: 'Andrew'},
                 {id: v1(), name: 'Sveta'},
@@ -61,13 +56,11 @@ let store: StoreType = {
                 {id: v1(), name: 'Valera'},
             ],
             messages: [
-                {id: v1(), message: 'Hi'},
-                {id: v1(), message: 'How is your it-kamasutra?'},
-                {id: v1(), message: 'Yo'},
-                {id: v1(), message: 'Yo'},
-                {id: v1(), message: 'Yo'},
+                {id: v1(), message: 'Yo! How are you?'},
+                {id: v1(), message: 'Hey! Thanks!'},
+                {id: v1(), message: 'Ok. See you soon!'},
+                {id: v1(), message: 'Where are you???'}
             ],
-            // newMessageText: '',
         },
     },
     getState() {
@@ -79,19 +72,11 @@ let store: StoreType = {
     subscribe(observer: any) {
         this._callSubscriber = observer
     },
-    dispatch(action: ActionType) {
-        switch (action.type) {
-            case 'ADD-POST': {
-                const newPost: PostsType = {
-                    id: v1(),
-                    avatar: '',
-                    message: action.postText,
-                    likes: 3
-                }
-                this._state.profilePage.posts.unshift(newPost)
-            }
-
-        }
+    dispatch(action) {
+        console.log(this._state.profilePage.posts)
+        this._state.profilePage = profileReducer(this._state.profilePage, action);
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
+        this._callSubscriber(this._state)
     }
 
 }
