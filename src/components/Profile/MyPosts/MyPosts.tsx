@@ -1,25 +1,27 @@
 import React, {ChangeEvent, FC, useState} from 'react';
 import {Post} from './Post/Post';
 import s from './MyPosts.module.css'
-
-import {addPostAC, ProfileAT} from '../../reducers/profile-reducer/profile-reducer';
 import {SuperButton} from '../../SuperButton/SuperButton';
 import {UniversalInput} from '../../UniversalInput /UniversalInput';
+import {PostsType} from '../../../store';
 
 type PropsType = {
-    dispatch: (newPostText: ProfileAT) => void
-    posts: Array<PostsType>
+    // dispatch: (newPostText: ProfileAT) => void
+    addPosts: (newPostText: string) => void
+    // posts: Array<PostsType>
+    // posts: PostsType[]
+    posts: any
 }
 
-type PostsType = {
-    id: string,
-    avatar: any,
-    message: string,
-    likes: number
-}
+// type PostsType = {
+//     id: string,
+//     avatar: any,
+//     message: string,
+//     likes: number
+// }
 
 export const MyPosts: FC<PropsType> = props => {
-    const {dispatch, posts} = props
+    const {addPosts, posts} = props
 
     const [newPost, setNewPost] = useState<string>('')
 
@@ -45,7 +47,7 @@ export const MyPosts: FC<PropsType> = props => {
 
 
     const addPostHandler = () => {
-        dispatch(addPostAC(newPost))
+        addPosts(newPost)
         setNewPost('')
     }
 

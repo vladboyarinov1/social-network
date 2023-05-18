@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import s from './Post.module.css'
 
 type PropsType = {
-    posts: Array<PostType>
+    posts: PostType[]
 };
 
 type PostType = {

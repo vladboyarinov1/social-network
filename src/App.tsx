@@ -1,20 +1,17 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import './App.css'
 import {Sidebar} from './components/Sidebar/Sidebar';
 import {Profile} from './components/Profile/Profile';
-import {Dialogs} from './components/Dialogs/Dialogs';
 import {News} from './components/News/News';
-import  {StateType} from './state';
+import {DialogsContainer} from './components/Dialogs/DialogsContainer';
 
 type PropsType = {
-    state: StateType
-    dispatch: (value: any) => void
+    store: any
 }
 
-
 const App: FC<PropsType> = (props) => {
-    const {state, dispatch} = props
+    const {store} = props
 
     return (
         <BrowserRouter>
@@ -22,14 +19,15 @@ const App: FC<PropsType> = (props) => {
                 <Sidebar/>
                 <div className="WrapperContent">
                     <Routes>
-                        <Route path="/profile" element={<Profile posts={state.profilePage.posts} dispatch={dispatch}  />}/>
-                        <Route path="/dialogs/*" element={<Dialogs dialogs={state.dialogsPage} dispatch={dispatch}/>}/>
+                        <Route path="/profile"
+                               element={<Profile store={store}/>}/>
+                        <Route path="/dialogs/*"
+                               element={<DialogsContainer store={store}/>}/>
                         <Route path="/news" element={<News/>}/>
                     </Routes>
                 </div>
             </div>
         </BrowserRouter>
-
     );
 }
 

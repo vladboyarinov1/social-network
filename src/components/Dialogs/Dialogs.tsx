@@ -1,27 +1,30 @@
 import React, {FC, useState} from 'react';
 import {DialogItem} from './DialogItem/DialogItem';
-import {DialogsPageType} from '../../state';
 import {UniversalInput} from '../UniversalInput /UniversalInput';
 import {SuperButton} from '../SuperButton/SuperButton';
 import {addMessageAC, DialogsAT} from '../reducers/dialogs-reducer/dialogs-reducer';
+import {DialogsPageType} from '../../store';
 
 type PropsType = {
     dialogs: DialogsPageType
-    dispatch: (newMessageText: DialogsAT) => void
+    addNewMessage: (newMessage: string) => void
 }
 
 export const Dialogs: FC<PropsType> = (props) => {
-    const {dialogs, dispatch} = props
+    const {dialogs, addNewMessage} = props
+
 
     const [message, setMessage] = useState<string>('')
 
     const addNewMessageHandler = () => {
-        dispatch(addMessageAC(message))
+        addNewMessage(message)
         setMessage('')
     }
     const onKeyDownAddPost = () => {
-        addNewMessageHandler()
+        addNewMessage(message)
+        setMessage('')
     }
+
     return <>
         <div>Dialogs</div>
         <DialogItem users={dialogs.users} messages={dialogs.messages}/>

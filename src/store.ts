@@ -1,5 +1,5 @@
 import {v1} from 'uuid';
-import {addPostAC, profileReducer} from './components/reducers/profile-reducer/profile-reducer';
+import {profileReducer} from './components/reducers/profile-reducer/profile-reducer';
 import {dialogsReducer} from './components/reducers/dialogs-reducer/dialogs-reducer';
 
 export type PostsType = {
@@ -73,7 +73,6 @@ let store: StoreType = {
         this._callSubscriber = observer
     },
     dispatch(action) {
-        console.log(this._state.profilePage.posts)
         this._state.profilePage = profileReducer(this._state.profilePage, action);
         this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
         this._callSubscriber(this._state)

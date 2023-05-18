@@ -1,4 +1,4 @@
-import {PostsType, ProfilePageType, StateType} from '../../../state';
+import {PostsType, ProfilePageType, StateType} from '../../../store';
 import {v1} from 'uuid';
 
 
@@ -9,7 +9,15 @@ export type AddPostAT = {
 
 export type ProfileAT = AddPostAT
 
-export const profileReducer = (state: ProfilePageType, action: ProfileAT) => {
+const initState: ProfilePageType = {
+    posts: [
+        {id: v1(), avatar: 'ava', message: 'Hello, it\'s my first message', likes: 8},
+        {id: v1(), avatar: 'ava', message: 'Hello, it\'s my second message', likes: 24}
+    ],
+}
+
+export const profileReducer = (state = initState, action: ProfileAT
+) => {
     switch (action.type) {
         case 'ADD-POST':
             const newPost: PostsType = {
@@ -28,4 +36,5 @@ export const profileReducer = (state: ProfilePageType, action: ProfileAT) => {
     }
 }
 export const addPostAC = (newPost: string): AddPostAT => ({type: 'ADD-POST', postText: newPost});
+
 
