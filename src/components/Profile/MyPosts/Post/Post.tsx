@@ -13,6 +13,7 @@ type PostType = {
 };
 
 export const Post: FC<PropsType> = props => {
+
     const {posts} = props
     return (
         <div className={s.wrapper}>

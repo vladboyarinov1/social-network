@@ -1,4 +1,4 @@
-import {PostsType, ProfilePageType, StateType} from '../../../store';
+import {PostsType, ProfilePageType} from '../../store';
 import {v1} from 'uuid';
 
 

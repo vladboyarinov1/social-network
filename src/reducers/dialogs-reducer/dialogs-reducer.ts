@@ -1,10 +1,7 @@
-import {DialogsPageType, MessagesType, StateType} from '../../../store';
+import {DialogsPageType, MessagesType} from '../../store';
 import {v1} from 'uuid';
 
-export type AddMessageAT = {
-    type: 'ADD-MESSAGE'
-    messageText: string
-}
+export type AddMessageAT = ReturnType<typeof addMessageAC>
 
 export type DialogsAT = AddMessageAT
 
@@ -25,14 +22,13 @@ const initState: DialogsPageType = {
     ],
 }
 
-export const dialogsReducer = (state = initState , action: DialogsAT) => {
+export const dialogsReducer = (state = initState, action: DialogsAT) => {
     switch (action.type) {
         case 'ADD-MESSAGE':
             const newMessage: MessagesType = {
                 id: v1(),
                 message: action.messageText
             }
-            // return state.messages.unshift(newMessage)
             return {
                 ...state,
                 messages: [newMessage, ...state.messages]
@@ -43,4 +39,7 @@ export const dialogsReducer = (state = initState , action: DialogsAT) => {
     }
 };
 
-export const addMessageAC = (newMessage: string): AddMessageAT => ({type: 'ADD-MESSAGE', messageText: newMessage})
+export const addMessageAC = (newMessage: string) => ({
+    type: 'ADD-MESSAGE',
+    messageText: newMessage
+} as const)

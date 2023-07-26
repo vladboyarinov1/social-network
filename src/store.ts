@@ -1,6 +1,6 @@
 import {v1} from 'uuid';
-import {profileReducer} from './components/reducers/profile-reducer/profile-reducer';
-import {dialogsReducer} from './components/reducers/dialogs-reducer/dialogs-reducer';
+import {profileReducer} from './reducers/profile-reducer/profile-reducer';
+import {dialogsReducer} from './reducers/dialogs-reducer/dialogs-reducer';
 
 export type PostsType = {
     id: string

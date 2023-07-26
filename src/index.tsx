@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import store from './redux/redux-store';
+import {Provider} from 'react-redux';
 
-let rerenderEntireTree = (state: any) => {
-    ReactDOM.render(<App store={store} />,
+let rerenderEntireTree = () => {
+    ReactDOM.render(
+        <Provider store={store}>
+            <App/>
+        </Provider>,
         document.getElementById('root')
     );
-    console.log(store.getState().profileReducer.posts)
 };
 
-//dispatch={store.dispatch.bind(store)}
-rerenderEntireTree(store.getState())
-store.subscribe(() => {
-    rerenderEntireTree(store.getState())
-})
+rerenderEntireTree()
+

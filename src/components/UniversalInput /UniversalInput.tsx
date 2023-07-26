@@ -1,4 +1,4 @@
-import React, {ChangeEvent, DetailedHTMLProps, FC, InputHTMLAttributes} from 'react';
+import React, {ChangeEvent, FC} from 'react';
 
 type InputType = {
     value: string

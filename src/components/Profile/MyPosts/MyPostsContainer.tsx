@@ -1,33 +1,21 @@
-import React, {FC} from 'react';
-import {addPostAC, ProfileAT} from '../../reducers/profile-reducer/profile-reducer';
+import React from 'react';
+import {addPostAC} from '../../../reducers/profile-reducer/profile-reducer';
 import {MyPosts} from './MyPosts';
-import {StoreType} from '../../../store';
+import {connect} from 'react-redux';
 
-type PropsType = {
-    // dispatch: (newPostText: ProfileAT) => void
-    // posts: Array<PostsType>
-    store: any
-}
+let mapStateToProps = (state: any) => {
 
-// type PostsType = {
-//     id: string,
-//     avatar: any,
-//     message: string,
-//     likes: number
-// }
-
-export const MyPostsContainer: FC<PropsType> = props => {
-
-    const {store} = props
-
-
-    const addPostHandler = (newPostText: string) => {
-        store.dispatch(addPostAC(newPostText))
+    return {
+        posts: state.profilePage
     }
-
-    return (
-        <>
-            <MyPosts addPosts={addPostHandler} posts={store.getState().profileReducer.posts}/>
-        </>
-    )
 }
+
+let mapDispatchToProps = (dispatch: any) => {
+    return {
+        addPosts: (newPostText: string) => {
+            dispatch(addPostAC(newPostText))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyPosts)

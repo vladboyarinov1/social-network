@@ -23,6 +23,7 @@ type PropsType = {
 export const MyPosts: FC<PropsType> = props => {
     const {addPosts, posts} = props
 
+
     const [newPost, setNewPost] = useState<string>('')
 
     const minLengthPost: number = 5
@@ -65,7 +66,7 @@ export const MyPosts: FC<PropsType> = props => {
                     {isPostToShortError}
                 </div>
             </div>
-            <Post posts={posts}/>
+            <Post posts={posts.posts}/>
         </>
     )
 }

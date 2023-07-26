@@ -2,7 +2,6 @@ import React, {FC, useState} from 'react';
 import {DialogItem} from './DialogItem/DialogItem';
 import {UniversalInput} from '../UniversalInput /UniversalInput';
 import {SuperButton} from '../SuperButton/SuperButton';
-import {addMessageAC, DialogsAT} from '../reducers/dialogs-reducer/dialogs-reducer';
 import {DialogsPageType} from '../../store';
 
 type PropsType = {
@@ -12,7 +11,6 @@ type PropsType = {
 
 export const Dialogs: FC<PropsType> = (props) => {
     const {dialogs, addNewMessage} = props
-
 
     const [message, setMessage] = useState<string>('')
 
