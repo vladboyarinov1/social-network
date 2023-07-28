@@ -1,137 +1,75 @@
-import React from 'react';
-import {UsersPageType, UserType} from '../../reducers/users-reducer/users-reducer';
-import s from './Users.module.css'
-import axios from 'axios';
-import userAvatar from '../../img/userAvatar.svg'
+import React, {FC} from 'react';
+import s from './Users.module.css';
+import userAvatar from '../../img/userAvatar.svg';
 import {Pagination} from '@mui/material';
+import {UserType} from '../../reducers/users-reducer/users-reducer';
+import {Preloader} from '../common/Preloader/Preloader';
+import {Link} from 'react-router-dom';
+import axios from 'axios';
 
-interface UsersProps extends UsersPageType {
-    setUsers: (users: UserType[]) => void
+type PropsType = {
+    items: UserType[]
+    totalUserCount: number
+    pageSize: number
+    currentPage: number
+    isFetching: boolean
     follow: (userId: number) => void
-    unfollow: (userId: number) => void
-    setPage: (currentPage: number) => void
-    setTotalUserCount: (count: number) => void
+    unFollow: (userId: number) => void
+    onPageChanged: (event: React.ChangeEvent<unknown>, pageNumber: number) => void
 }
 
-export class Users extends React.Component<UsersProps, UsersProps> {
-
-    componentDidMount() {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
-            .then(res => {
-                this.props.setUsers(res.data.items)
-                this.props.setTotalUserCount(res.data.totalCount)
-            })
-    }
-
-    onPageChanged = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
-        this.props.setPage(pageNumber)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`)
-            .then(res => {
-                this.props.setUsers(res.data.items)
-            })
-    }
-
-    render() {
-        let pagesCount = Math.ceil(this.props.totalUserCount / this.props.pageSize)
-
-        return (
-            <div>
-                {
-                    this.props.items.map(u => {
-                        return (
-                            <div className={s.wrapper} key={u.id}>
-                                <div className={s.imgContainer}><img className={s.img}
-                                                                     src={u.photos.small !== null ? u.photos.small : userAvatar}
-                                                                     alt=""/></div>
-                                <div className={s.mainBlock}>
-                                    <div className={s.fullName}>{u.name}</div>
-                                    <div className={s.status}>{u.status}</div>
-                                    <div className={s.locationBlock}>
-                                        {/*<div>{u.location.city},</div>*/}
-                                        {/*<div>{u.location.country}</div>*/}
+export const Users: FC<PropsType> = (props) => {
+    let pagesCount = Math.ceil(props.totalUserCount / props.pageSize)
+    return (
+        <>
+            <Preloader isFetching={props.isFetching}/>
+            <div className={!props.isFetching ? s.container : `${s.container} ${s.disabledContainer}`}>
+                <div>
+                    {
+                        props.items.map(u => {
+                            return (
+                                <div className={s.wrapper} key={u.id}>
+                                    <Link to={`/profile/${u.id}`}>
+                                        <div className={s.imgContainer}><img className={s.img}
+                                                                             src={u.photos.small !== null ? u.photos.small : userAvatar}
+                                                                             alt=""/></div>
+                                    </Link>
+                                    <div className={s.mainBlock}>
+                                        <div className={s.fullName}>{u.name}</div>
+                                        <div className={s.status}>{u.status}</div>
+                                        <div className={s.locationBlock}>
+                                            {/*<div>{u.location.city},</div>*/}
+                                            {/*<div>{u.location.country}</div>*/}
+                                        </div>
                                     </div>
+                                    {u.followed ? <button className={`${s.button} ${s.unfollowBtn}`}
+                                                          onClick={() => {
+                                                              axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {withCredentials: true})
+                                                                  .then(res => {
+                                                                      if (res.data.resultCode === 0) {
+                                                                          props.unFollow(u.id)
+                                                                      }
+                                                                  })
+                                                          }}>Отписаться</button> :
+                                        <button className={s.button}
+                                                onClick={() => {
+                                                    axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {withCredentials: true})
+                                                        .then(res => {
+                                                            if (res.data.resultCode === 0) {
+                                                                props.follow(u.id)
+                                                            }
+                                                        })
+                                                }
+                                                }>Подписаться</button>}
                                 </div>
-                                {u.followed ? <button className={`${s.button} ${s.unfollowBtn}`}
-                                                      onClick={() => this.props.unfollow(u.id)}>Отписаться</button> :
-                                    <button className={s.button}
-                                            onClick={() => this.props.follow(u.id)}>Подписаться</button>}
-                            </div>
-                        )
-                    })
-                }
-                <div className={s.pagination}><Pagination count={pagesCount} page={this.props.currentPage} onChange={this.onPageChanged}/></div>
+                            )
+                        })
+                    }
+                </div>
+
+                <div className={s.pagination}><Pagination size="large" count={pagesCount} page={props.currentPage}
+                                                          onChange={props.onPageChanged}/></div>
             </div>
-        );
-    }
-}
-
-
-//
-// export const Users: FC<UsersProps> = ({setUsers, follow, unfollow}) => {
-//
-//     const users = useAppSelector((state) => state.usersPage.items)
-
-
-// if (!users.length) {
-//     setUsers([
-//         {
-//             id: 1,
-//             img: userAva,
-//             fullName: 'Vladislav',
-//             status: 'developer',
-//             location: {country: 'Belarus', city: 'Minsk'},
-//             followed: false
-//         },
-//         {
-//             id: 2,
-//             img: userAva,
-//             fullName: 'Anton',
-//             status: 'QA',
-//             location: {country: 'Russia', city: 'Moscow'},
-//             followed: true
-//         },
-//         {
-//             id: 3,
-//             img: userAva,
-//             fullName: 'Igor',
-//             status: 'PM',
-//             location: {country: 'Poland', city: 'Warsaw'},
-//             followed: false
-//         },
-//         {
-//             id: 4,
-//             img: userAva,
-//             fullName: 'Dima',
-//             status: 'HR',
-//             location: {country: 'Belarus', city: 'Brest'},
-//             followed: true
-//         }
-//     ])
-// }
-
-//     return (
-//         <div>
-//             {
-//                 users.map(u => {
-//                     return (
-//                         <div className={s.wrapper} key={u.id}>
-//                             {/*<div className={s.imgContainer}><img className={s.img} src={u.img} alt=""/></div>*/}
-//                             <div className={s.mainBlock}>
-//                                 <div className={s.fullName}>{u.name}</div>
-//                                 <div className={s.status}>{u.status}</div>
-//                                 <div className={s.locationBlock}>
-//                                     {/*<div>{u.location.city},</div>*/}
-//                                     {/*<div>{u.location.country}</div>*/}
-//                                 </div>
-//                             </div>
-//                             {/*<button className={s.button}>{u.followed ? 'Отписаться' : 'Подписаться'}</button>*/}
-//                             {u.followed ? <button className={`${s.button} ${s.unfollowBtn}`}
-//                                                   onClick={() => unfollow(u.id)}>Отписаться</button> :
-//                                 <button className={s.button} onClick={() => follow(u.id)}>Подписаться</button>}
-//                         </div>
-//                     )
-//                 })
-//             }
-//         </div>
-//     );
-// };
+        </>
+    );
+};

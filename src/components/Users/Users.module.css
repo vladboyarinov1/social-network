@@ -1,3 +1,15 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.disabledContainer {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 .wrapper {
     display: flex;
     /*border: 1px solid #B23850;*/
@@ -30,11 +42,11 @@
     cursor: pointer;
     margin-right: 8px;
 }
+
 .pagination {
     display: flex;
-    border: 1px solid #637542;
     justify-content: center;
-    padding: 10px 0;
+    padding: 20px 0;
 
 }
 

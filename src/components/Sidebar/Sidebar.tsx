@@ -7,9 +7,16 @@ import {ReactComponent as SettingsImg} from '../../img/icons/settings.svg';
 import {ReactComponent as LogoImg} from '../../img/icons/logo.svg';
 import {ReactComponent as LogoMobile} from '../../img/icons/logoMobile.svg';
 import {ReactComponent as UsersImg} from '../../img/icons/users.svg';
-import {Link} from 'react-router-dom';
+import {ReactComponent as Login} from '../../img/icons/login.svg';
+import {NavLink} from 'react-router-dom';
+import styled from 'styled-components';
 
-export const Sidebar: FC = () => {
+type PropsType = {
+    isAuth: boolean
+    login: string
+}
+
+export const Sidebar: FC<PropsType> = ({isAuth, login}) => {
     return (
         <div className={s.wrapper}>
             <div className={s.sideNav}>
@@ -17,16 +24,51 @@ export const Sidebar: FC = () => {
                     <div className={s.logoImg}><LogoImg/></div>
                     <div className={s.logoIcon}><LogoMobile/></div>
                 </a>
-                <ul className={s.navLinks}>
-                    <li><Link to="/profile"><ProfileImg className={s.navIcons}/><p>Profile</p></Link></li>
-                    <li><Link to="/dialogs"><MessageImg className={s.navIcons}/><p>Messages</p></Link></li>
-                    <li><Link to="/users"><UsersImg className={s.navIcons}/><p>Users</p></Link></li>
-                    <li><Link to="/news"><NewsImg className={s.navIcons}/><p>News</p></Link></li>
-                    {/*<li><Link to="/music"><MusicImg className={s.navIcons}/><p>Music</p></Link></li>*/}
-                    <li><Link to="/settings"><SettingsImg className={s.navIcons}/><p>Settings</p></Link></li>
-                    <div className={s.active}></div>
-                </ul>
+                <div className={s.links}>
+                    <div><NavWrapper><NavLink to="/profile"><ProfileImg className={s.navIcons}/><p>Profile</p></NavLink></NavWrapper>
+                        <NavWrapper><NavLink to="/dialogs"><MessageImg className={s.navIcons}/><p>Messages</p></NavLink></NavWrapper>
+                        <NavWrapper><NavLink to="/users"><UsersImg className={s.navIcons}/><p>Users</p>
+                        </NavLink></NavWrapper>
+                        <NavWrapper><NavLink to="/news"><NewsImg className={s.navIcons}/><p>News</p>
+                        </NavLink></NavWrapper>
+                        {/*<li><Link to="/music"><MusicImg className={s.navIcons}/><p>Music</p></Link></li>*/}
+                        <NavWrapper><NavLink to="/settings"><SettingsImg className={s.navIcons}/><p>Settings</p>
+                        </NavLink></NavWrapper></div>
+                    {isAuth ? <NavWrapper><NavLink to="/login"><Login className={s.navIcons}/><p>{login}</p>
+                        </NavLink></NavWrapper> :
+                        <div><NavWrapper><NavLink to="/login"><Login className={s.navIcons}/><p>Login</p>
+                        </NavLink></NavWrapper></div>}
+                </div>
             </div>
         </div>
     );
 };
+
+const NavWrapper = styled.div`
+  padding: 0 0 15px 0;
+
+  @media only screen and (max-width: 600px) {
+    & a p {
+      display: none;
+    }
+  }
+
+  & a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+  }
+
+  & > a.active {
+    text-decoration: none;
+    color: #B23850;
+  }
+
+  & > a:hover {
+    color: dodgerblue;
+  }
+
+`
+

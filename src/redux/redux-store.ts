@@ -4,13 +4,15 @@ import {dialogsReducer} from '../reducers/dialogs-reducer/dialogs-reducer';
 import {usersReducer} from '../reducers/users-reducer/users-reducer';
 import thunk from 'redux-thunk';
 import {TypedUseSelectorHook, useSelector} from 'react-redux';
+import {authReducer} from '../reducers/auth-reducer/auth-reducer';
 
 export type StateType = ReturnType<typeof reducers>
 
 let reducers = combineReducers({
     profilePage: profileReducer,
     dialogsPage: dialogsReducer,
-    usersPage: usersReducer
+    usersPage: usersReducer,
+    auth: authReducer
 })
 
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector

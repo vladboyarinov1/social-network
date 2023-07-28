@@ -1,17 +1,19 @@
-import {Dispatch} from 'redux';
 import {NetworkApi} from '../../api/network-api';
+import {Dispatch} from 'redux';
 
-export type FollowACType = ReturnType<typeof followAC>
-export type UnFollowACType = ReturnType<typeof unFollowAC>
-export type SetUsersACType = ReturnType<typeof setUsersAC>
+export type FollowACType = ReturnType<typeof follow>
+export type UnFollowACType = ReturnType<typeof unFollow>
+export type SetUsersACType = ReturnType<typeof setUsers>
 export type  SetCurrentPage = ReturnType<typeof setCurrentPage>
 export type SetTotalUserCount = ReturnType<typeof setTotalUserCount>
+export type SetLoader = ReturnType<typeof setLoader>
 
 export type ActionTypes = FollowACType
     | UnFollowACType
     | SetUsersACType
     | SetCurrentPage
     | SetTotalUserCount
+    | SetLoader
 
 export type UserType = {
     id: number
@@ -27,15 +29,17 @@ export type UserType = {
 export type UsersPageType = {
     items: UserType[],
     pageSize: number,
-    totalUserCount: number
+    totalCount: number
     currentPage: number
+    isFetching: boolean
 }
 
 const initState: UsersPageType = {
     items: [],
-    pageSize: 6, //элементов на странице
-    totalUserCount: 0, // всего есть элементов
-    currentPage: 1
+    pageSize: 8, //элементов на странице
+    totalCount: 0, // всего есть элементов
+    currentPage: 1,
+    isFetching: false
 }
 
 export const usersReducer = (state: UsersPageType = initState, action: ActionTypes): UsersPageType => {
@@ -55,23 +59,27 @@ export const usersReducer = (state: UsersPageType = initState, action: ActionTyp
         case 'SET-CURRENT-PAGE':
             return {...state, currentPage: action.currentPage}
         case 'SET-TOTAL-USER-COUNT':
-            return {...state, totalUserCount: action.totalUserCount}
+            return {...state, totalCount: action.totalUserCount}
+        case 'SET-LOADER':
+            return {
+                ...state, isFetching: action.isFetching
+            }
         default:
             return state
     }
 };
 
-export const followAC = (id: number) => ({
+export const follow = (id: number) => ({
     type: 'FOLLOW',
     id,
 } as const)
 
-export const unFollowAC = (id: number) => ({
+export const unFollow = (id: number) => ({
     type: 'UNFOLLOW',
     id,
 } as const)
 
-export const setUsersAC = (users: UserType[]) => ({
+export const setUsers = (users: UserType[]) => ({
     type: 'SET-USERS',
     users
 } as const)
@@ -79,17 +87,21 @@ export const setCurrentPage = (currentPage: number) => ({type: 'SET-CURRENT-PAGE
 
 export const setTotalUserCount = (count: number) => ({type: 'SET-TOTAL-USER-COUNT', totalUserCount: count} as const)
 
+export const setLoader = (value: boolean) => ({type: 'SET-LOADER', isFetching: value} as const)
 
-export const getUsersTC = () => (dispatch: Dispatch) => {
-    // dispatch(setLoadingStatusAC('loading'))
-    NetworkApi.getUsers()
-        .then(res => {
-            dispatch(setUsersAC(res.data.items))
-            // console.log(res.data.items)
-            // dispatch(setLoadingStatusAC('succeeded'))
+//export const getTasksTC = (todolistId: string) => (dispatch: Dispatch) => TodolistApi.getTasks(todolistId)
+//     .then((res) => {
+//         dispatch(setTasksAC(todolistId, res.data.items))
+//     })
+export const setUsersTC = (currentPage: number, pageSize: number) => (dispatch: Dispatch) => {
+
+    NetworkApi.getUsers(currentPage, pageSize)
+        .then((res) => {
+            dispatch(setUsers(res.data.items))
+            dispatch(setTotalUserCount(res.data.totalCount))
+            // dispatch(setTotalUserCount(res.data.totalUserCount))
         })
-        .catch(error => {
-            console.log(error)
-            // dispatch(setErrorStatusAC(error.message))
-        });
+        .catch(() => {
+            throw new Error('Error connect')
+        })
 }
