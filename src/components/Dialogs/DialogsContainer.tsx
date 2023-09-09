@@ -2,17 +2,16 @@ import React, {FC} from 'react';
 import {addMessageAC} from '../../reducers/dialogs-reducer/dialogs-reducer';
 import {Dialogs} from './Dialogs';
 import {connect} from 'react-redux';
-import {Dispatch} from 'redux';
-
-
+import {compose, Dispatch} from 'redux';
+import {witchAuthRedirect} from '../HOC/witchAuthRedirect/witchAuthRedirect';
 
 
 let mapStateToProps = (state: any) => {
     return {
-        dialogs: state.dialogsPage
-        // dialogsPage: state.messages
+        dialogs: state.dialogsPage,
     }
 }
+
 let mapDispatchToProps = (dispatch: Dispatch) => {
     return {
         addNewMessage: (newMessage: string) => {
@@ -20,5 +19,4 @@ let mapDispatchToProps = (dispatch: Dispatch) => {
         }
     }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dialogs)
+export default compose(connect(mapStateToProps, mapDispatchToProps), witchAuthRedirect)(Dialogs)

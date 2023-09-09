@@ -1,38 +1,51 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import axios from 'axios';
-import {setUserProfile} from '../../reducers/profile-reducer/profile-reducer';
+import {
+    getUserProfile,
+    setUserProfile,
+    setUserStatusTC,
+    updateStatusTC
+} from '../../reducers/profile-reducer/profile-reducer';
 import {Profile} from './Profile';
+import {witchAuthRedirect} from '../HOC/witchAuthRedirect/witchAuthRedirect';
+import {compose} from 'redux';
 
 class ProfileContainer extends React.Component<any> {
 
     componentDidMount() {
-        // this.props.setLoader(true)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${this.props.id}`)
-            .then(res => {
-                // debugger
-                this.props.setUserProfile(res.data)
-                // this.props.setLoader(false)
-            })
+        this.props.getUserProfile(this.props.id)
+        this.props.setUserStatusTC(this.props.id)
     }
+
+    componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<{}>, snapshot?: any) {
+        if (prevProps.status !== this.props.status) {
+            this.setState(({
+                status: this.props.status
+            }))
+        }
+    }
+
 
     render() {
         return (
             <>
-                <Profile profile={this.props.profile} posts={this.props.posts}/>
-                {/*<MyPostsContainer/>*/}
+                <Profile profile={this.props.profile} posts={this.props.posts} status={this.props.status}
+                         updateStatus={this.props.updateStatusTC}/>
             </>
         )
-
     }
 }
 
 const mapStateToProps = (state: any) => {
     return {
-        profile: state.profilePage.profile
+        profile: state.profilePage.profile,
+        status: state.profilePage.status
     }
 }
 
-export default connect(mapStateToProps, {
-    setUserProfile
-})(ProfileContainer)
+export default compose(connect(mapStateToProps, {
+    setUserProfile,
+    getUserProfile,
+    setUserStatusTC,
+    updateStatusTC
+}), witchAuthRedirect)(ProfileContainer)

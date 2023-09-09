@@ -1,11 +1,14 @@
-import {useParams} from 'react-router-dom';
 import ProfileContainer from './ProfileContainer';
-
+import {useAppSelector} from '../../redux/redux-store';
+import {useParams} from 'react-router-dom';
 
 export function TestContainer() {
     let {id} = useParams();
+    let profileId = useAppSelector(state => state.auth.id);
+
     if (!id) {
-        id = '2';
+        id = profileId?.toString() || '';
     }
+
     return <ProfileContainer id={Number(id)}/>;
 }

@@ -1,5 +1,5 @@
 import {v1} from 'uuid';
-import {profileReducer, UserProfile} from './reducers/profile-reducer/profile-reducer';
+import {UserProfile} from './reducers/profile-reducer/profile-reducer';
 import {dialogsReducer} from './reducers/dialogs-reducer/dialogs-reducer';
 
 export type PostsType = {
@@ -17,8 +17,9 @@ export type MessagesType = {
     message: string
 }
 export type ProfilePageType = {
-    posts: PostsType[],
-    profile: UserProfile | null
+    posts: PostsType[] | null[],
+    profile: UserProfile | null,
+    status: string | null
 }
 export type DialogsPageType = {
     users: DialogsType[]

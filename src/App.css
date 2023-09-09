@@ -5,7 +5,8 @@
     grid-row-gap: 20px;
     justify-items: stretch;
     align-items: stretch;
-    background-color: #D2D2D2;
+    /*background-color: #D2D2D2;*/
+    background-color: rgba(0, 0, 0, 0.07);
 }
 
 .WrapperContent {

@@ -10,6 +10,8 @@ import {ReactComponent as UsersImg} from '../../img/icons/users.svg';
 import {ReactComponent as Login} from '../../img/icons/login.svg';
 import {NavLink} from 'react-router-dom';
 import styled from 'styled-components';
+import {useDispatch} from 'react-redux';
+import {logoutTC} from '../../reducers/auth-reducer/auth-reducer';
 
 type PropsType = {
     isAuth: boolean
@@ -17,6 +19,11 @@ type PropsType = {
 }
 
 export const Sidebar: FC<PropsType> = ({isAuth, login}) => {
+    const dispatch: any = useDispatch()
+
+    const onClickButtonHandler = () => {
+        dispatch(logoutTC())
+    }
     return (
         <div className={s.wrapper}>
             <div className={s.sideNav}>
@@ -34,8 +41,8 @@ export const Sidebar: FC<PropsType> = ({isAuth, login}) => {
                         {/*<li><Link to="/music"><MusicImg className={s.navIcons}/><p>Music</p></Link></li>*/}
                         <NavWrapper><NavLink to="/settings"><SettingsImg className={s.navIcons}/><p>Settings</p>
                         </NavLink></NavWrapper></div>
-                    {isAuth ? <NavWrapper><NavLink to="/login"><Login className={s.navIcons}/><p>{login}</p>
-                        </NavLink></NavWrapper> :
+                    {isAuth ? <div onClick={onClickButtonHandler}><NavWrapper><NavLink to="/login"><Login className={s.navIcons}/><p>Login out</p>
+                        </NavLink></NavWrapper></div> :
                         <div><NavWrapper><NavLink to="/login"><Login className={s.navIcons}/><p>Login</p>
                         </NavLink></NavWrapper></div>}
                 </div>

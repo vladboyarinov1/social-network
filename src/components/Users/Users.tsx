@@ -2,10 +2,9 @@ import React, {FC} from 'react';
 import s from './Users.module.css';
 import userAvatar from '../../img/userAvatar.svg';
 import {Pagination} from '@mui/material';
-import {UserType} from '../../reducers/users-reducer/users-reducer';
+import {setDisabled, UserType} from '../../reducers/users-reducer/users-reducer';
 import {Preloader} from '../common/Preloader/Preloader';
 import {Link} from 'react-router-dom';
-import axios from 'axios';
 
 type PropsType = {
     items: UserType[]
@@ -13,13 +12,25 @@ type PropsType = {
     pageSize: number
     currentPage: number
     isFetching: boolean
-    follow: (userId: number) => void
-    unFollow: (userId: number) => void
+    followingInProgress: any[]
+    setDisable: (userId: number, isFetching: boolean) => void
+    followTC: (userId: number) => void
+    unFollowTC: (userId: number) => void
     onPageChanged: (event: React.ChangeEvent<unknown>, pageNumber: number) => void
 }
 
 export const Users: FC<PropsType> = (props) => {
+
     let pagesCount = Math.ceil(props.totalUserCount / props.pageSize)
+
+    const unFollowHandler = (userId: number) => {
+        props.unFollowTC(userId)
+    }
+    const followHandler = (userId: number) => {
+        props.followTC(userId)
+    }
+    const disabled = (currentId: number) => props.followingInProgress.some(id => currentId === id)
+
     return (
         <>
             <Preloader isFetching={props.isFetching}/>
@@ -42,25 +53,12 @@ export const Users: FC<PropsType> = (props) => {
                                             {/*<div>{u.location.country}</div>*/}
                                         </div>
                                     </div>
-                                    {u.followed ? <button className={`${s.button} ${s.unfollowBtn}`}
-                                                          onClick={() => {
-                                                              axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {withCredentials: true})
-                                                                  .then(res => {
-                                                                      if (res.data.resultCode === 0) {
-                                                                          props.unFollow(u.id)
-                                                                      }
-                                                                  })
-                                                          }}>Отписаться</button> :
-                                        <button className={s.button}
-                                                onClick={() => {
-                                                    axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {withCredentials: true})
-                                                        .then(res => {
-                                                            if (res.data.resultCode === 0) {
-                                                                props.follow(u.id)
-                                                            }
-                                                        })
-                                                }
-                                                }>Подписаться</button>}
+                                    {u.followed ? <button disabled={disabled(u.id)}
+                                                          className={`${s.button} ${s.unfollowBtn}`}
+                                                          onClick={() => unFollowHandler(u.id)}>Отписаться</button> :
+                                        <button disabled={disabled(u.id)}
+                                                className={s.button}
+                                                onClick={() => followHandler(u.id)}>Подписаться</button>}
                                 </div>
                             )
                         })

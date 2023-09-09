@@ -4,10 +4,15 @@ import {ProfileInfo} from './ProfileInfo/ProfileInfo';
 import MyPostsContainer from './MyPosts/MyPostsContainer';
 import {ProfilePageType} from '../../store';
 
-export const Profile: FC<ProfilePageType> = (props) => {
+interface PropsType extends ProfilePageType {
+    status: string,
+    updateStatus: (value: string) => void
+}
+
+export const Profile: FC<PropsType> = (props) => {
     return (
         <div className={s.wrapper}>
-            <ProfileInfo profile={props.profile} />
+            <ProfileInfo profile={props.profile} status={props.status} updateStatus={props.updateStatus}/>
             <MyPostsContainer/>
         </div>
     )
