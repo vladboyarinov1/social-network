@@ -23,7 +23,7 @@ const initialState = {
     status: 'loading' as RequestStatusType
 }
 
-type InitialStateType = typeof initialState
+export type InitialStateType = typeof initialState
 
 export type AppActionsType = SetLoadingStatusACType
     | ReturnType<typeof setErrorAC>

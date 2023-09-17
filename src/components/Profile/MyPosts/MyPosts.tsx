@@ -1,9 +1,8 @@
-import React, {ChangeEvent, FC, useState} from 'react';
+import React, {ChangeEvent, FC, memo, useState} from 'react';
 import {Post} from './Post/Post';
 import s from './MyPosts.module.css'
 import {SuperButton} from '../../SuperButton/SuperButton';
 import {UniversalInput} from '../../UniversalInput /UniversalInput';
-import {PostsType} from '../../../store';
 
 type PropsType = {
     // dispatch: (newPostText: ProfileAT) => void
@@ -20,8 +19,9 @@ type PropsType = {
 //     likes: number
 // }
 
-export const MyPosts: FC<PropsType> = props => {
+export const MyPosts: FC<PropsType> = memo((props) => {
     const {addPosts, posts} = props
+    console.log('MyPost was rerender')
 
 
     const [newPost, setNewPost] = useState<string>('')
@@ -69,4 +69,4 @@ export const MyPosts: FC<PropsType> = props => {
             <Post posts={posts.posts}/>
         </>
     )
-}
+})

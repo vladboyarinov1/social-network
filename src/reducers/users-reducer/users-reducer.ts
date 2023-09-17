@@ -41,7 +41,7 @@ export type UsersPageType = {
     fake: number
 }
 
-const initState: UsersPageType = {
+export const initState: UsersPageType = {
     items: [],
     pageSize: 8, //элементов на странице
     totalCount: 0, // всего есть элементов
@@ -51,7 +51,7 @@ const initState: UsersPageType = {
     fake: 10
 }
 
-export const usersReducer = (state: UsersPageType = initState, action: ActionTypes): UsersPageType => {
+export const usersReducer = (state = initState, action: ActionTypes): UsersPageType => {
     switch (action.type) {
         case 'FAKE':
             return {...state, fake: state.fake + 1}

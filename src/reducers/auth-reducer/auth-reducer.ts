@@ -4,7 +4,7 @@ import {FormValuesType} from '../../components/common/Login/Login';
 import {log} from 'util';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 
-type AuthType = {
+export type AuthType = {
     userId: number | null
     email: string | null
     login: string | null
@@ -16,7 +16,7 @@ type SetUserData = ReturnType<typeof setAuthUserData>
 type SetIsLoggedInAC = ReturnType<typeof setIsLoggedInAC>
 
 
-const initState: AuthType = {
+ const initState: AuthType = {
     id: null,
     userId: null,
     email: null,
