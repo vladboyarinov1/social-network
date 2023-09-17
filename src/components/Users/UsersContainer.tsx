@@ -9,7 +9,6 @@ import {Users} from './Users';
 import {witchAuthRedirect} from '../HOC/witchAuthRedirect/witchAuthRedirect';
 import {compose} from 'redux';
 
-
 export interface UsersProps extends UsersPageType {
     followTC: (userId: number) => void
     unFollowTC: (userId: number) => void
@@ -42,7 +41,6 @@ export class UsersContainer extends React.Component<UsersProps, UsersProps> {
 }
 
 const mapStateToProps = (state: any) => {
-    console.log('map state to props USERS§')
     return {
         items: state.usersPage.items,
         pageSize: state.usersPage.pageSize,

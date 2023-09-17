@@ -2,9 +2,10 @@ import React, {FC} from 'react';
 import s from './Users.module.css';
 import userAvatar from '../../img/userAvatar.svg';
 import {Pagination} from '@mui/material';
-import {setDisabled, UserType} from '../../reducers/users-reducer/users-reducer';
+import {followTC, setDisabled, unFollowTC, UserType} from '../../reducers/users-reducer/users-reducer';
 import {Preloader} from '../common/Preloader/Preloader';
 import {Link} from 'react-router-dom';
+import {User} from './User/User';
 
 type PropsType = {
     items: UserType[]
@@ -39,27 +40,9 @@ export const Users: FC<PropsType> = (props) => {
                     {
                         props.items.map(u => {
                             return (
-                                <div className={s.wrapper} key={u.id}>
-                                    <Link to={`/profile/${u.id}`}>
-                                        <div className={s.imgContainer}><img className={s.img}
-                                                                             src={u.photos.small !== null ? u.photos.small : userAvatar}
-                                                                             alt=""/></div>
-                                    </Link>
-                                    <div className={s.mainBlock}>
-                                        <div className={s.fullName}>{u.name}</div>
-                                        <div className={s.status}>{u.status}</div>
-                                        <div className={s.locationBlock}>
-                                            {/*<div>{u.location.city},</div>*/}
-                                            {/*<div>{u.location.country}</div>*/}
-                                        </div>
-                                    </div>
-                                    {u.followed ? <button disabled={disabled(u.id)}
-                                                          className={`${s.button} ${s.unfollowBtn}`}
-                                                          onClick={() => unFollowHandler(u.id)}>Отписаться</button> :
-                                        <button disabled={disabled(u.id)}
-                                                className={s.button}
-                                                onClick={() => followHandler(u.id)}>Подписаться</button>}
-                                </div>
+                                <User followed={u.followed} key={u.id} userId={u.id} status={u.status}
+                                      followTC={followHandler} unFollowTC={unFollowHandler} name={u.name}
+                                      smallImg={u.photos.small} disabled={disabled(u.id)}/>
                             )
                         })
                     }

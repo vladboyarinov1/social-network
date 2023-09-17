@@ -4,7 +4,7 @@ import './App.css'
 import {News} from './components/News/News';
 import UsersContainer from './components/Users/UsersContainer';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
-import {TestContainer} from './components/Profile/TestContainer';
+import {ProfileWithUseParams} from './components/Profile/ProfileWithUseParams';
 import SidebarContainer from './components/Sidebar/SidebarContainer';
 import {Login} from './components/common/Login/Login';
 import {ErrorSnackbar} from './components/common/ErrorSnackbar/ErrorSnackbar';
@@ -20,7 +20,7 @@ class App extends React.Component {
                         <Routes>
                             <Route path="/" element={<Navigate to="/profile"/>}/>
                             <Route path="/profile/:id?"
-                                   element={<TestContainer/>}/>
+                                   element={<ProfileWithUseParams/>}/>
                             <Route path="/dialogs/*"
                                    element={<DialogsContainer/>}/>
                             <Route path="/users"

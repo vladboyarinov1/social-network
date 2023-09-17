@@ -17,7 +17,6 @@ export type FormValuesType = {
 export const Login: FC<any> = () => {
     const dispatch: any = useDispatch()
     let isLogin = useAppSelector<any>(state => state.auth.isAuth)
-    let error
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -30,7 +29,6 @@ export const Login: FC<any> = () => {
                 .min(4, 'Password must be at least 8 characters long')
         }),
         onSubmit: values => {
-            // alert(JSON.stringify(values, null, 2));
             dispatch(loginTC(values))
             formik.resetForm()
         },

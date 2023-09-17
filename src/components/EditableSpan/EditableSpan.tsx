@@ -19,9 +19,7 @@ export const EditableSpan: FC<PropsType> = (props) => {
 
 
     const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        // props.updateStatus(e.currentTarget.value)
         setUpdatedStatus(e.currentTarget.value)
-
     }
 
 

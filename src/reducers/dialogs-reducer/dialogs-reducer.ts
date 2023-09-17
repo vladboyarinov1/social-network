@@ -1,10 +1,6 @@
 import {DialogsPageType, MessagesType} from '../../store';
 import {v1} from 'uuid';
 
-export type AddMessageAT = ReturnType<typeof addMessageAC>
-
-export type DialogsAT = AddMessageAT
-
 const initState: DialogsPageType = {
     users: [
         {id: v1(), name: 'VLAD'},
@@ -43,3 +39,7 @@ export const addMessageAC = (newMessage: string) => ({
     type: 'ADD-MESSAGE',
     messageText: newMessage
 } as const)
+
+//types
+export type AddMessageAT = ReturnType<typeof addMessageAC>
+export type DialogsAT = AddMessageAT
