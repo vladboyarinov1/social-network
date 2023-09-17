@@ -1,29 +1,19 @@
 import React, {FC} from 'react';
 import s from './Profile.module.css'
-import {MyPosts} from './MyPosts/MyPosts';
-import ava from '../../img/avatar.jpg'
 import {ProfileInfo} from './ProfileInfo/ProfileInfo';
+import MyPostsContainer from './MyPosts/MyPostsContainer';
+import {ProfilePageType} from '../../store';
 
-type PropsType = {
-    addPost: (postText: string) => void
-    posts: Array<PostsType>
+interface PropsType extends ProfilePageType {
+    status: string,
+    updateStatus: (value: string) => void
 }
 
-type PostsType = {
-    id: string,
-    avatar: any,
-    message: string,
-    likes: number
-}
-
-export const Profile: FC<PropsType> = props => {
-
-    const {addPost, posts} = props
-
+export const Profile: FC<PropsType> = (props) => {
     return (
         <div className={s.wrapper}>
-            <ProfileInfo/>
-            <MyPosts addPost={addPost} posts={posts}/>
+            <ProfileInfo profile={props.profile} status={props.status} updateStatus={props.updateStatus}/>
+            <MyPostsContainer/>
         </div>
     )
 }

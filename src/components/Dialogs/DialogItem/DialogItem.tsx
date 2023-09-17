@@ -10,16 +10,16 @@ type MessagesType = {
     message: string
 }
 type PropsType = {
-    dialogs: Array<DialogsType>
+    users: Array<DialogsType>
     messages: Array<MessagesType>
 }
 
 export const DialogItem: FC<PropsType> = (props) => {
-    const {dialogs, messages} = props
+    const {users, messages} = props
 
     return <>
         {
-            dialogs.map((d) => (
+            users.map((d) => (
                 <div key={d.id}>
                     <NavLink to={'/dialogs/' + d.id}>{d.name}</NavLink>
                 </div>

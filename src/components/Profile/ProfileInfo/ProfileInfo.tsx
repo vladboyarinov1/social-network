@@ -1,28 +1,42 @@
-import React from 'react';
+import React, {FC, useState} from 'react';
 import s from './ProfileInfo.module.css'
-import ava from '../../../img/avatar.jpg';
+import userAvatar from '../../../img/userAvatar.svg';
+import {UserProfile} from '../../../reducers/profile-reducer/profile-reducer';
+import {EditableSpan} from '../../EditableSpan/EditableSpan';
 
-export const ProfileInfo = () => {
+type PropsType = {
+    profile: UserProfile | null,
+    status: string,
+    updateStatus: (value: string) => void
+}
+
+export const ProfileInfo: FC<PropsType> = (props) => {
+
+
     return (
         <>
+            {/*<div>{props.profile?.fullName }</div>*/}
+
             <div className={s.profile}>
                 <div className={s.avatar}>
-                    <img className={s.avatarImg} src={ava} alt=""/>
+                    <img className={s.avatarImg}
+                         src={props.profile?.photos.small || userAvatar} alt=""/>
                 </div>
-                <div className={s.name}>Vladislav Boiarinov</div>
+                <div className={s.name}>{props.profile?.fullName}</div>
+                {props.profile?.userId === 27358 ?
+                    <EditableSpan status={props.status} updateStatus={props.updateStatus}/> :
+                    <div style={{padding: '10px'}}>{props.status || '---'}</div>}
                 <div>
                     <div className={s.textCols}>
                         <div className={s.textColsLeft}>
-                            <div>Country:</div>
-                            <div>Date of birth:</div>
-                            <div>Education:</div>
-                            <div>Telegram:</div>
+                            <div>Обо мне:</div>
+                            <div>В поиске работы:</div>
+                            <div>GitHub:</div>
                         </div>
                         <div className={s.textColsRight}>
-                            <div>Minsk</div>
-                            <div>7 February 2002</div>
-                            <div>BNTU 2020-2024</div>
-                            <div>@boyarinov_1</div>
+                            <div>{props.profile?.aboutMe || '-'}</div>
+                            <div>{props.profile?.lookingForAJob ? '✅' : '❌'}</div>
+                            {props.profile?.contacts.github || '-'}
                         </div>
                     </div>
                 </div>

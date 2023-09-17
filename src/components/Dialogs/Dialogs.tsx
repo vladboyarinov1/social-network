@@ -1,25 +1,32 @@
-import React from 'react';
+import React, {FC, useState} from 'react';
 import {DialogItem} from './DialogItem/DialogItem';
-import {v1} from 'uuid';
+import {UniversalInput} from '../UniversalInput /UniversalInput';
+import {SuperButton} from '../SuperButton/SuperButton';
+import {DialogsPageType} from '../../store';
 
-const dialogs = [
-    {id: v1(), name: 'Vlad'},
-    {id: v1(), name: 'Anton'},
-    {id: v1(), name: 'Viktor'},
-    {id: v1(), name: 'Alina'},
-];
-const messages = [
-    {id: v1(), message: 'Yo! How are you?'},
-    {id: v1(), message: 'Hey! Thanks!'},
-    {id: v1(), message: 'Ok. See you soon!'},
-    {id: v1(), message: 'Where are you???'}
-];
+type PropsType = {
+    dialogs: DialogsPageType
+    addNewMessage: (newMessage: string) => void
+}
 
+export const Dialogs: FC<PropsType> = (props) => {
+    const {dialogs, addNewMessage} = props
 
+    const [message, setMessage] = useState<string>('')
 
-export const Dialogs = () => {
+    const addNewMessageHandler = () => {
+        addNewMessage(message)
+        setMessage('')
+    }
+    const onKeyDownAddPost = () => {
+        addNewMessage(message)
+        setMessage('')
+    }
+
     return <>
         <div>Dialogs</div>
-        <DialogItem dialogs={dialogs} messages={messages}/>
+        <DialogItem users={dialogs.users} messages={dialogs.messages}/>
+        <UniversalInput value={message} setValue={setMessage} onEnter={onKeyDownAddPost} placeholder={'Enter'}/>
+        <SuperButton title={'SEND'} onClick={addNewMessageHandler} disabled={false}/>
     </>
 }

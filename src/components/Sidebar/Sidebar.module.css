@@ -19,6 +19,9 @@
     left: 0;
     padding: 30px 30px;
     border-radius: 0 12px 12px 0;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+
 }
 
 .logo {
@@ -31,51 +34,6 @@
     justify-content: center;
 }
 
-.navLinks {
-    list-style: none;
-    position: relative;
-}
-
-.navLinks li {
-    padding: 10px 0;
-}
-
-.navLinks li a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 14px;
-    display: flex;
-    align-items: center;
-}
-
-.navLinks li:hover a {
-    transition: 0.3s;
-}
-
-.navLinks li:hover ~ .active {
-    display: block;
-}
-
-.navLinks li:nth-child(1):hover ~ .active {
-    top: 2.6%;
-}
-
-.navLinks li:nth-child(2):hover ~ .active {
-    top: 21.2%;
-}
-
-.navLinks li:nth-child(3):hover ~ .active {
-    top: 41.8%;
-}
-
-.navLinks li:nth-child(4):hover ~ .active {
-    top: 61.4%;
-}
-
-.navLinks li:nth-child(5):hover ~ .active {
-    top: 82%;
-}
-
 .navIcons {
     width: 20px;
     height: 20px;
@@ -83,23 +41,15 @@
     filter: invert(100%) sepia(100%) saturate(100%)
 }
 
-.active {
-    background: #B23850;
-    width: 100%;
-    height: 47px;
-    position: absolute;
-    left: 0;
-    top: 2.6%;
-    z-index: -1;
-    border-radius: 6px;
-    box-shadow: 0 5px 10px rgb(178, 56, 80);
-    display: none;
-    transition: top 0.3s;
-}
-
 .logoIcon {
     display: none;
     width: 45px;
+}
+.links {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 60%;
 }
 
 @media only screen and (max-width: 600px) {

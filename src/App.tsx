@@ -1,45 +1,39 @@
-import React, {useState} from 'react';
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import React from 'react';
+import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 import './App.css'
-import {Sidebar} from './components/Sidebar/Sidebar';
-import {Profile} from './components/Profile/Profile';
-import {Dialogs} from './components/Dialogs/Dialogs';
 import {News} from './components/News/News';
-import {v1} from 'uuid';
+import UsersContainer from './components/Users/UsersContainer';
+import DialogsContainer from './components/Dialogs/DialogsContainer';
+import {ProfileWithUseParams} from './components/Profile/ProfileWithUseParams';
+import SidebarContainer from './components/Sidebar/SidebarContainer';
+import {Login} from './components/common/Login/Login';
+import {ErrorSnackbar} from './components/common/ErrorSnackbar/ErrorSnackbar';
 
+class App extends React.Component {
 
-function App() {
-    const [posts, setPosts] = useState(
-        [
-            {id: v1(), avatar: 'ava', message: 'Hello, it\'s my first message', likes: 8},
-            {id: v1(), avatar: 'ava', message: 'Hello, it\'s my second message', likes: 24},
-        ]
-    )
-    const addPost = (postText: string) => {
-        const newPost = {
-            id: v1(),
-            avatar: '',
-            message: postText,
-            likes: 3
-        }
-        setPosts([newPost, ...posts])
-    }
-
-    return (
-        <BrowserRouter>
-            <div className="appWrapper">
-                <Sidebar/>
-                <div className="WrapperContent">
-                    <Routes>
-                        <Route path="/profile" element={<Profile addPost={addPost} posts={posts}/>}/>
-                        <Route path="/dialogs/*" element={<Dialogs/>}/>
-                        <Route path="/news" element={<News/>}/>
-                    </Routes>
+    render() {
+        return (
+            <BrowserRouter>
+                <div className="appWrapper">
+                    <SidebarContainer/>
+                    <div className="WrapperContent">
+                        <Routes>
+                            <Route path="/" element={<Navigate to="/profile"/>}/>
+                            <Route path="/profile/:id?"
+                                   element={<ProfileWithUseParams/>}/>
+                            <Route path="/dialogs/*"
+                                   element={<DialogsContainer/>}/>
+                            <Route path="/users"
+                                   element={<UsersContainer/>}/>
+                            <Route path="/news" element={<News/>}/>
+                            <Route path="/login" element={<Login/>}/>
+                        </Routes>
+                    </div>
+                    <ErrorSnackbar/>
                 </div>
-            </div>
-        </BrowserRouter>
-
-    );
+            </BrowserRouter>
+        );
+    }
 }
 
 export default App;
